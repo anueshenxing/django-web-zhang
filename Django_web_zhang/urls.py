@@ -43,6 +43,7 @@ urlpatterns = [
     url(r'^news_data_gathering$', news_views.news_data_gathering),
     url(r'^news_data_preprocess$', news_views.news_data_preprocess),
     url(r'^word_to_vec$', news_views.word2vec),
+    url(r'^ajax_gathering_news$', news_views.ajax_gathering_news),
 
     # 用户管理
     url(r'^user_manage$', news_views.manageUser),

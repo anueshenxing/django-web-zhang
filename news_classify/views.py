@@ -1,21 +1,9 @@
 # coding=utf-8
 import json
-
 from django.shortcuts import render, render_to_response
 from django.http import HttpResponse, JsonResponse
+from service.crawler_news import *
 # Create your views here.
-from django.template import loader
-
-
-# def detail(request, question_id):
-#     return HttpResponse("you're looking at question %s." % question_id)
-#
-# def results(request, question_id):
-#     response = "You're looking at the result of question %s."
-#     return HttpResponse(response % question_id)
-#
-# def vote(request, question_id):
-#     return HttpResponse("You're voting on question %s." % question_id)
 
 def home_page(request):
     return render_to_response("news/home.html")
@@ -49,6 +37,28 @@ def RNN_classifier(request):
 # 新闻管理
 def news_data_gathering(request):
     return render_to_response("news_data_manage/news_data_gathering.html")
+
+
+#  爬取新闻数据
+def ajax_gathering_news(request):
+    news_site = request.GET['news_site']
+    news_start_end_time = request.GET['news_start_end_time']
+    page_numbers = int(request.GET['page_numbers'])
+    news_ctg = request.GET['news_ctg']
+    # print news_site
+    # print news_start_end_time
+    # print page_numbers
+    # print news_ctg
+    # print '----------------'
+    news_data = crawler(news_site, news_start_end_time, page_numbers, news_ctg)
+#     data = {
+#     'name' : 'ACME',
+#     'shares' : 100,
+#     'price' : 542.23
+# }
+    # complete_network = json.load(open("/home/zhang/PycharmProjects/sentence_classify_zhang/data_file/webkei_dep.json", 'rb'))
+    json_str = json.dumps(news_data)
+    return JsonResponse(json.loads(json_str))
 
 def news_data_preprocess(request):
     return render_to_response("news_data_manage/news_data_preprocess.html")

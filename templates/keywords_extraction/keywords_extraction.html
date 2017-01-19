@@ -124,7 +124,8 @@
                                 <!-- textarea -->
                                 <div class="form-group">
                                     <label>新闻内容</label>
-                                    <textarea id="news_content" class="form-control" rows="10" placeholder="Enter ..."></textarea>
+                                    <textarea id="news_content" class="form-control" rows="10"
+                                              placeholder="Enter ..."></textarea>
                                 </div>
                             </form>
                         </div>
@@ -144,7 +145,7 @@
                         <!-- /.box-header -->
                         <div class="box-body">
                             <div class="callout callout-danger" id="complete">
-{#                                <button type="button" class="btn btn-block btn-warning btn-lg"><h4>新闻内容语义复杂网络</h4></button>#}
+                                {#                                <button type="button" class="btn btn-block btn-warning btn-lg"><h4>新闻内容语义复杂网络</h4></button>#}
                                 <h4><span id="complete_network">新闻内容语义复杂网络</span></h4>
                             </div>
                             <div class="callout callout-info" onclick="function_2">
@@ -206,120 +207,120 @@
 
 <!-- 点击事件 -->
 <script>
-    $("#complete").click(function(){
+    $("#complete").click(function () {
         $("#function_detail").text($("#complete_network").text());
         alert($("#news_title").val());
         // 基于准备好的dom，初始化echarts实例
-    var myChart = echarts.init(document.getElementById('main'));
-    option = {
-        title: {
-            text: 'webkit内核依赖',
-            subtext: '数据来自网络',
-            x: 'right',
-            y: 'bottom'
-        },
-        tooltip: {
-            trigger: 'item',
-            formatter: "{b}"
-        },
-        toolbox: {
-            show: true,
-            feature: {
-                restore: {show: true},
-                magicType: {
-                    show: true,
-                    type: ['force', 'chord'],
-                    option: {
-                        chord: {
-                            minRadius: 2,
-                            maxRadius: 10,
-                            ribbonType: false,
-                            itemStyle: {
-                                normal: {
-                                    label: {
-                                        show: true,
-                                        rotate: true
-                                    },
-                                    chordStyle: {
-                                        opacity: 0.2
+        var myChart = echarts.init(document.getElementById('main'));
+        option = {
+            title: {
+                text: 'webkit内核依赖',
+                subtext: '数据来自网络',
+                x: 'right',
+                y: 'bottom'
+            },
+            tooltip: {
+                trigger: 'item',
+                formatter: "{b}"
+            },
+            toolbox: {
+                show: true,
+                feature: {
+                    restore: {show: true},
+                    magicType: {
+                        show: true,
+                        type: ['force', 'chord'],
+                        option: {
+                            chord: {
+                                minRadius: 2,
+                                maxRadius: 10,
+                                ribbonType: false,
+                                itemStyle: {
+                                    normal: {
+                                        label: {
+                                            show: true,
+                                            rotate: true
+                                        },
+                                        chordStyle: {
+                                            opacity: 0.2
+                                        }
                                     }
                                 }
-                            }
-                        },
-                        force: {
-                            minRadius: 5,
-                            maxRadius: 8,
-                            itemStyle: {
-                                normal: {
-                                    label: {
-                                        show: false
-                                    },
-                                    linkStyle: {
-                                        opacity: 0.5
+                            },
+                            force: {
+                                minRadius: 5,
+                                maxRadius: 8,
+                                itemStyle: {
+                                    normal: {
+                                        label: {
+                                            show: false
+                                        },
+                                        linkStyle: {
+                                            opacity: 0.5
+                                        }
                                     }
                                 }
                             }
                         }
-                    }
-                },
-                saveAsImage: {show: true}
+                    },
+                    saveAsImage: {show: true}
+                }
+            },
+            legend: {
+                data: ['HTMLElement', 'WebGL', 'SVG', 'CSS', 'Other'],
+                orient: 'vertical',
+                x: 'left'
+            },
+            noDataEffect: 'none',
+            series: [{
+                type: 'force'
+            }]
+        };
+        myChart.setOption(option);
+        myChart.hideLoading();
+        $.ajax({
+            url: 'get_webkit_dep',
+            data: {
+                news_title: $("#news_title").val(),
+                news_content: $("#news_content").val()
+            },
+            type: "GET",
+            dataType: 'json',
+            async: true,
+
+            success: function (data) {
+                option.series[0] = {
+                    type: 'force',
+                    name: 'webkit-dep',
+                    itemStyle: {
+                        normal: {
+                            linkStyle: {
+                                opacity: 0.5
+                            }
+                        }
+                    },
+                    categories: data.categories,
+                    nodes: data.nodes,
+                    links: data.links,
+                    minRadius: 5,
+                    maxRadius: 8,
+                    gravity: 1.1,
+                    scaling: 1.1,
+                    steps: 20,
+                    large: true,
+                    useWorker: true,
+                    coolDown: 0.995,
+                    ribbonType: false
+                };
+
+                myChart.setOption(option);
+                myChart.hideLoading();
+            },
+            error: function () {
+                alert("error")
             }
-        },
-        legend: {
-            data: ['HTMLElement', 'WebGL', 'SVG', 'CSS', 'Other'],
-            orient: 'vertical',
-            x: 'left'
-        },
-        noDataEffect: 'none',
-        series: [{
-            type: 'force'
-        }]
-    };
-    myChart.setOption(option);
-    myChart.hideLoading();
-    $.ajax({
-        url: 'get_webkit_dep',
-        data:{
-            news_title: $("#news_title").val(),
-            news_content: $("#news_content").val()
-        },
-        type: "GET",
-        dataType: 'json',
-        async: true,
 
-        success: function (data) {
-            option.series[0] = {
-                type: 'force',
-                name: 'webkit-dep',
-                itemStyle: {
-                    normal: {
-                        linkStyle: {
-                            opacity: 0.5
-                        }
-                    }
-                },
-                categories: data.categories,
-                nodes: data.nodes,
-                links: data.links,
-                minRadius: 5,
-                maxRadius: 8,
-                gravity: 1.1,
-                scaling: 1.1,
-                steps: 20,
-                large: true,
-                useWorker: true,
-                coolDown: 0.995,
-                ribbonType: false
-            };
-
-            myChart.setOption(option);
-            myChart.hideLoading();
-        },
-        error: function () {
-            alert("error")
-        }
-
-    });
+        });
     });
 </script>
 

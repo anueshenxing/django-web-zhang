@@ -28,6 +28,8 @@
     <!-- AdminLTE Skins. Choose a skin from the css/skins
            folder instead of downloading all of them to reduce the load. -->
     <link href="/staticfiles/AdminLTE/dist/css/skins/_all-skins.min.css" rel="stylesheet" type="text/css"/>
+    <!-- daterange picker -->
+    <link rel="stylesheet" href="/staticfiles/AdminLTE/plugins/daterangepicker/daterangepicker-bs3.css">
 
     <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -106,13 +108,81 @@
 
         <!-- Main content -->
         <section class="content">
-
-
             <div class="row">
                 <div class="col-md-12">
+                    <div class="box box-warning">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">新闻采集参数设置</h3>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <form role="form">
+                                <!-- text input -->
+                                <div class="form-group">
+                                    <label>门户网站</label>
+                                    <select class="form-control" id="news_site">
+                                        <option value="http://www.toutiao.com">今日头条</option>
+                                        <option value="http://www.news.qq.com">腾讯新闻</option>
+                                        <option value="http://www.news.163.com">网易新闻</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>抓取起止时间:</label>
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        <input type="text" class="form-control pull-right" id="reservation">
+                                    </div>
+                                    <!-- /.input group -->
+                                </div>
+                                <div class="form-group">
+                                    <label>抓取页面数</label>
+                                    <input type="text" class="form-control" placeholder="Enter ..." id="page_numbers">
+                                </div>
+                                <div class="form-group">
+                                    <label>新闻类别</label>
+                                    <select multiple="" class="form-control" id="news_ctgs">
+                                        <option value="society">社会</option>
+                                        <option value="edu">教育</option>
+                                        <option value="sports">体育</option>
+                                        <option value="travel">旅游</option>
+                                        <option value="military">军事</option>
+                                        <option value="finance">财经</option>
+                                        <option value="tech">科技</option>
+                                        <option value="food">美食</option>
+                                        <option value="health">健康</option>
+                                        <option value="car">汽车</option>
+                                        <option value="entertainment">娱乐</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-default btn-block" id="news_gathering">
+                                        开始采集新闻数据
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+                </div>
 
-                </div><!-- /.box -->
-            </div><!-- /.col -->
+                <div class="col-md-12">
+                    <div class="box box-default">
+                        <div class="box-header with-border">
+                            <i class="fa fa-bullhorn"></i>
+
+                            <h3 class="box-title">采集结果</h3>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body" id="gathering_news_result">
+
+                        </div>
+                        <!-- /.box-body -->
+
+                    </div>
+                </div>
+            </div>
         </section>
     </div>
 </div>
@@ -133,8 +203,84 @@
 <!-- CK Editor -->
 <script src="https://cdn.ckeditor.com/4.4.3/standard/ckeditor.js" type="text/javascript"></script>
 <!-- Bootstrap WYSIHTML5 -->
-<script src="/staticfiles/AdminLTE/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js" type="text/javascript"></script>
+<script src="/staticfiles/AdminLTE/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"
+        type="text/javascript"></script>
 <!-- ChartJS 1.0.1 -->
 <script src="/staticfiles/AdminLTE/plugins/chartjs/Chart.min.js" type="text/javascript"></script>
+<!-- date-range-picker -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+<script src="/staticfiles/AdminLTE/plugins/daterangepicker/daterangepicker.js"></script>
+
+<script>
+    $(function () {
+        //Date range picker
+        $('#reservation').daterangepicker();
+
+        //新闻爬取
+        $('#news_gathering').click(function () {
+            var ctgs = $('#news_ctgs').val() || []
+            ctgs = ctgs.join(",")
+            $.ajax({
+                url: 'ajax_gathering_news',
+                data: {
+                    news_site: $('#news_site').val(),
+                    news_start_end_time: $('#reservation').val(),
+                    page_numbers: $('#page_numbers').val(),
+                    news_ctg: ctgs
+                },
+                type: "GET",
+                dataType: 'json',
+                async: true,
+
+                success: function (data) {
+                    for(var i= 0;i<data.news.length;i++){
+{#                        alert(data.news[i].news_title)#}
+                        $('#gathering_news_result').append(
+                                '<div class="box box-solid">' +
+                                '<div class="box-header with-border">' +
+                                '<i class="fa fa-text-width"></i>' +
+                                '<h3 class="box-title">' +
+                                data.news[i].news_title +
+                                '</h3>' +
+                                '</div>' +
+                                '<!-- /.box-header -->' +
+                                '<div class="box-body">' +
+                                '<dl>' +
+                                '<dt>' +
+                                '类别' +
+                                '</dt>' +
+                                '<dd>' +
+                                data.news[i].news_ctg  +
+                                '</dd>' +
+                                '<dt>' +
+                                '新闻内容' +
+                                '</dt>' +
+                                '<dd>' +
+                                data.news[i].news_content +
+                                '</dd>' +
+                                '<dt>' +
+                                'URL' +
+                                '</dt>' +
+                                '<dd>' +
+                                data.news[i].news_url +
+                                '</dd>' +
+                                '<dt>' +
+                                '时间' +
+                                '</dt>' +
+                                '<dd>' +
+                                data.news[i].news_time +
+                                '</dd>' +
+                                '</dl></div></div>'
+                        );
+                    }
+                },
+                error: function () {
+                    alert("error")
+                }
+
+            });
+        });
+    });
+</script>
 </body>
 </html>

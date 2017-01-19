@@ -106,13 +106,66 @@
 
         <!-- Main content -->
         <section class="content">
-
-
             <div class="row">
                 <div class="col-md-12">
-
-                </div><!-- /.box -->
-            </div><!-- /.col -->
+                    <div class="box box-warning">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">词向量训练参数设置</h3>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <form role="form">
+                                <!-- text input -->
+                                <div class="form-group">
+                                    <label>模型选择</label>
+                                    <select class="form-control">
+                                        <option>skip-gram</option>
+                                        <option>CBOW</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputFile">选取训练预料</label>
+                                    <input type="file" id="exampleInputFile">
+                                </div>
+                                <div class="form-group">
+                                    <label>训练窗口大小</label>
+                                    <input type="text" class="form-control" placeholder="Enter ...">
+                                </div>
+                                <div class="form-group">
+                                    <label>采样阈值</label>
+                                    <input type="text" class="form-control" placeholder="Enter ...">
+                                </div>
+                                <div class="form-group">
+                                    <label>学习速率</label>
+                                    <input type="text" class="form-control" placeholder="Enter ...">
+                                </div>
+                                <div class="form-group">
+                                    <label>设置最低频率</label>
+                                    <input type="text" class="form-control" placeholder="Enter ...">
+                                </div>
+                                <div class="form-group">
+                                    <label>二进制文件存储</label>
+                                    <select class="form-control">
+                                        <option>是</option>
+                                        <option>否</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>是否使用HS方法</label>
+                                    <select class="form-control">
+                                        <option>是</option>
+                                        <option>否</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-default btn-block">开始训练词向量</button>
+                                </div>
+                            </form>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+                </div>
+            </div>
         </section>
     </div>
 </div>
@@ -133,7 +186,8 @@
 <!-- CK Editor -->
 <script src="https://cdn.ckeditor.com/4.4.3/standard/ckeditor.js" type="text/javascript"></script>
 <!-- Bootstrap WYSIHTML5 -->
-<script src="/staticfiles/AdminLTE/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js" type="text/javascript"></script>
+<script src="/staticfiles/AdminLTE/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"
+        type="text/javascript"></script>
 <!-- ChartJS 1.0.1 -->
 <script src="/staticfiles/AdminLTE/plugins/chartjs/Chart.min.js" type="text/javascript"></script>
 </body>
