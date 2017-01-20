@@ -44,6 +44,11 @@ urlpatterns = [
     url(r'^news_data_preprocess$', news_views.news_data_preprocess),
     url(r'^word_to_vec$', news_views.word2vec),
     url(r'^ajax_gathering_news$', news_views.ajax_gathering_news),
+    url(r'^ajax_fenci$', news_views.ajax_fenci),
+    url(r'^ajax_stopwords_filter$', news_views.ajax_stopwords_filter),
+    url(r'^ajax_word_pesg$', news_views.ajax_word_pesg),
+    url(r'^ajax_text_corpus$', news_views.ajax_text_corpus),
+    url(r'^ajax_train_word2vec$', news_views.ajax_train_word2vec),
 
     # 用户管理
     url(r'^user_manage$', news_views.manageUser),

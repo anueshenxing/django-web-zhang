@@ -114,10 +114,10 @@
                         </div>
                         <!-- /.box-header -->
                         <div class="box-body">
-                            <button type="button" class="btn btn-block btn-primary btn-lg">中文分词</button>
-                            <button type="button" class="btn btn-block btn-info btn-lg">停用词过滤</button>
-                            <button type="button" class="btn btn-block btn-success btn-lg">词性标注</button>
-                            <button type="button" class="btn btn-block btn-danger btn-lg">生成语料</button>
+                            <button type="button" class="btn btn-block btn-primary btn-lg" id="fenci">中文分词</button>
+                            <button type="button" class="btn btn-block btn-info btn-lg" id="stopwords_filter">停用词过滤</button>
+                            <button type="button" class="btn btn-block btn-success btn-lg" id="word_pesg">词性标注</button>
+                            <button type="button" class="btn btn-block btn-danger btn-lg" id="text_corpus">生成语料</button>
 
                         </div>
                         <!-- /.box-body -->
@@ -149,5 +149,72 @@
 <script src="/staticfiles/AdminLTE/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js" type="text/javascript"></script>
 <!-- ChartJS 1.0.1 -->
 <script src="/staticfiles/AdminLTE/plugins/chartjs/Chart.min.js" type="text/javascript"></script>
+<script>
+    $(function () {
+        //分词
+        $('#fenci').click(function () {
+            $.ajax({
+                url: 'ajax_fenci',
+                type: "GET",
+                dataType: 'json',
+                async: true,
+                success: function (data) {
+                    alert(data.state)
+                },
+                error: function () {
+                    alert("error")
+                }
+            });
+        });
+
+        //停用词过滤
+        $('#stopwords_filter').click(function () {
+            $.ajax({
+                url: 'ajax_stopwords_filter',
+                type: "GET",
+                dataType: 'json',
+                async: true,
+                success: function (data) {
+                    alert(data.state)
+                },
+                error: function () {
+                    alert("error")
+                }
+            });
+        });
+
+        //词性标注
+        $('#word_pesg').click(function () {
+            $.ajax({
+                url: 'ajax_word_pesg',
+                type: "GET",
+                dataType: 'json',
+                async: true,
+                success: function (data) {
+                    alert(data.state)
+                },
+                error: function () {
+                    alert("error")
+                }
+            });
+        });
+
+        //生成语料
+        $('#text_corpus').click(function () {
+            $.ajax({
+                url: 'ajax_text_corpus',
+                type: "GET",
+                dataType: 'json',
+                async: true,
+                success: function (data) {
+                    alert(data.state)
+                },
+                error: function () {
+                    alert("error")
+                }
+            });
+        });
+    });
+</script>
 </body>
 </html>

@@ -2,7 +2,7 @@
 import json
 from django.shortcuts import render, render_to_response
 from django.http import HttpResponse, JsonResponse
-from service.crawler_news import *
+from service.data_manage_service import *
 # Create your views here.
 
 def home_page(request):
@@ -45,19 +45,51 @@ def ajax_gathering_news(request):
     news_start_end_time = request.GET['news_start_end_time']
     page_numbers = int(request.GET['page_numbers'])
     news_ctg = request.GET['news_ctg']
-    # print news_site
-    # print news_start_end_time
-    # print page_numbers
-    # print news_ctg
-    # print '----------------'
     news_data = crawler(news_site, news_start_end_time, page_numbers, news_ctg)
-#     data = {
-#     'name' : 'ACME',
-#     'shares' : 100,
-#     'price' : 542.23
-# }
-    # complete_network = json.load(open("/home/zhang/PycharmProjects/sentence_classify_zhang/data_file/webkei_dep.json", 'rb'))
     json_str = json.dumps(news_data)
+    return JsonResponse(json.loads(json_str))
+
+#  分词
+def ajax_fenci(request):
+    fenci()
+    message = {"state": "success"}
+    json_str = json.dumps(message)
+    return JsonResponse(json.loads(json_str))
+
+#  停用词过滤
+def ajax_stopwords_filter(request):
+    stopwords_filter()
+    message = {"state": "success"}
+    json_str = json.dumps(message)
+    return JsonResponse(json.loads(json_str))
+
+#  词性标注
+def ajax_word_pesg(request):
+    word_pesg()
+    message = {"state": "success"}
+    json_str = json.dumps(message)
+    return JsonResponse(json.loads(json_str))
+
+#  生成语料
+def ajax_text_corpus(request):
+    text_corpus()
+    message = {"state": "success"}
+    json_str = json.dumps(message)
+    return JsonResponse(json.loads(json_str))
+
+#  训练词向量
+def ajax_train_word2vec(request):
+    sg = int(request.GET['sg'])
+    sentences_dir = request.GET['sentences_dir']
+    size = int(request.GET['size'])
+    window = int(request.GET['window'])
+    negative = int(request.GET['negative'])
+    hs = int(request.GET['hs'])
+    sample = float(request.GET['sample'])
+
+    train_word2vec(sg, sentences_dir, size, window, negative, hs, sample)
+    message = {"state": "success"}
+    json_str = json.dumps(message)
     return JsonResponse(json.loads(json_str))
 
 def news_data_preprocess(request):
