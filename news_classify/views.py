@@ -3,6 +3,7 @@ import json
 from django.shortcuts import render, render_to_response
 from django.http import HttpResponse, JsonResponse
 from service.data_manage_service import *
+from service.keywords_service import *
 
 
 # Create your views here.
@@ -39,11 +40,12 @@ def keywords_extraction(request):
 
 # 获取复杂网络数据
 def ajax_complete_network(request):
-    complete_network = json.load(
-        open("/home/zhang/PycharmProjects/sentence_classify_zhang/data_file/webkei_dep.json", 'rb'))
     news_title = request.GET['news_title']
     news_content = request.GET['news_content']
-    print news_title, news_content
+    # print news_title, news_content
+    get_word_comlete_network(news_content)
+    complete_network = json.load(
+        open(global_set.DATA_FILE_DIR+"enable_generate/complete_network.json", 'rb'))
     return JsonResponse(complete_network)
 
 

@@ -135,7 +135,7 @@ def fenci():
 
 
 def stopwords_filter():
-    stopwords_file_dir = global_set.DATA_FILE_DIR + "stopwords_csdn_shijieba2009.txt"
+    stopwords_file_dir = global_set.DATA_FILE_DIR + "direct_use/stopwords_csdn_shijieba2009.txt"
     stopwords = load_stopwords(stopwords_file_dir)
     for news in News.objects:
         news_title_fenci = news.news_title_fenci.encode('utf-8')
@@ -155,7 +155,7 @@ def stopwords_filter():
 
 
 def word_pesg():
-    stopwords_file_dir = global_set.DATA_FILE_DIR + "stopwords_csdn_shijieba2009.txt"
+    stopwords_file_dir = global_set.DATA_FILE_DIR + "direct_use/stopwords_csdn_shijieba2009.txt"
     stopwords = load_stopwords(stopwords_file_dir)
     word_flag_vocab = defaultdict()
     for news in News.objects:
@@ -169,11 +169,11 @@ def word_pesg():
             if word not in stopwords:
                 word_flag_vocab[word] = flag
 
-    cPickle.dump([word_flag_vocab], open(global_set.DATA_FILE_DIR + "word_flag_vocab.p", "wb"))
+    cPickle.dump([word_flag_vocab], open(global_set.DATA_FILE_DIR + "enable_generate/word_flag_vocab.p", "wb"))
 
 
 def text_corpus():
-    news_corpus_dir = global_set.DATA_FILE_DIR + "news_corpus.txt"
+    news_corpus_dir = global_set.DATA_FILE_DIR + "enable_generate/news_corpus.txt"
     news_corpus = open(news_corpus_dir, "a")
     for news in News.objects:
         one_news_text = news.news_title_fenci_noSTW.decode('utf-8') + " " + \
@@ -187,10 +187,10 @@ def train_word2vec(sg, sentences_dir, size, window, negative, hs, sample):
     sentences = gensim.models.word2vec.Text8Corpus(sentences_dir)
     model = gensim.models.Word2Vec(sentences, sg=sg, size=size, window=window, negative=negative, hs=hs,
                                    sample=sample, workers=multiprocessing.cpu_count())
-    model.save(global_set.DATA_FILE_DIR + 'news_corpus')
-    # model.save_word2vec_format(global_set.DATA_FILE_DIR + 'news_corpus' + '.vector', binary=True)
+    model.save(global_set.DATA_FILE_DIR + 'enable_generate/news_corpus_word2vec')
+    # model.save_word2vec_format(global_set.DATA_FILE_DIR + 'news_corpus_word2vec' + '.vector', binary=True)
 
 
 if __name__ == "__main__":
-    model = gensim.models.Word2Vec.load("/home/zhang/PycharmProjects/django-web-zhang-git/data_file/news_corpus")
+    model = gensim.models.Word2Vec.load("/home/zhang/PycharmProjects/django-web-zhang-git/data_file/news_corpus_word2vec")
     print model.most_similar(u'月')

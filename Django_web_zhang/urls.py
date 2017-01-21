@@ -33,7 +33,7 @@ urlpatterns = [
 
     # 关键词提取页面
     url(r'^keyword_extraction$', news_views.keywords_extraction),
-    url(r'^get_webkit_dep_2', news_views.ajax_complete_network),
+    url(r'^get_complete_network', news_views.ajax_complete_network),
 
     # 新闻分类
     url(r'^CNN_classifier$', news_views.CNN_classifier),
