@@ -144,17 +144,16 @@
                         </div>
                         <!-- /.box-header -->
                         <div class="box-body">
-                            <div class="callout callout-danger" id="complete">
-                                {#                                <button type="button" class="btn btn-block btn-warning btn-lg"><h4>新闻内容语义复杂网络</h4></button>#}
-                                <h4><span id="complete_network">新闻内容语义复杂网络</span></h4>
+                            <div class="callout callout-danger" id="complete_network">
+                                <h4>新闻内容语义复杂网络</h4>
                             </div>
-                            <div class="callout callout-info" onclick="function_2">
+                            <div class="callout callout-info" id="tf_idf_keywords">
                                 <h4>基于TF-IDF关键词提取</h4>
                             </div>
-                            <div class="callout callout-warning" onclick="function_3">
+                            <div class="callout callout-warning">
                                 <h4>基于复杂网络关键词提取</h4>
                             </div>
-                            <div class="callout callout-success" onclick="function_4">
+                            <div class="callout callout-success">
                                 <h4>基于多特征融合关键词提取</h4>
                             </div>
                         </div>
@@ -207,71 +206,29 @@
 
 <!-- 点击事件 -->
 <script>
-    $("#complete").click(function () {
+    $("#complete_network").click(function () {
         $("#function_detail").text($("#complete_network").text());
-        alert($("#news_title").val());
-        // 基于准备好的dom，初始化echarts实例
+
         var myChart = echarts.init(document.getElementById('main'));
         option = {
             title: {
-                text: 'webkit内核依赖',
-                subtext: '数据来自网络',
+                text: '语义复杂网络',
+                subtext: '基于词间相似度',
                 x: 'right',
                 y: 'bottom'
             },
             tooltip: {
                 trigger: 'item',
-                formatter: "{b}"
+                formatter: '{a} : {b}'
             },
             toolbox: {
                 show: true,
                 feature: {
                     restore: {show: true},
-                    magicType: {
-                        show: true,
-                        type: ['force', 'chord'],
-                        option: {
-                            chord: {
-                                minRadius: 2,
-                                maxRadius: 10,
-                                ribbonType: false,
-                                itemStyle: {
-                                    normal: {
-                                        label: {
-                                            show: true,
-                                            rotate: true
-                                        },
-                                        chordStyle: {
-                                            opacity: 0.2
-                                        }
-                                    }
-                                }
-                            },
-                            force: {
-                                minRadius: 5,
-                                maxRadius: 8,
-                                itemStyle: {
-                                    normal: {
-                                        label: {
-                                            show: false
-                                        },
-                                        linkStyle: {
-                                            opacity: 0.5
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
+                    magicType: {show: true, type: ['force', 'chord']},
                     saveAsImage: {show: true}
                 }
             },
-            legend: {
-                data: ['HTMLElement', 'WebGL', 'SVG', 'CSS', 'Other'],
-                orient: 'vertical',
-                x: 'left'
-            },
-            noDataEffect: 'none',
             series: [{
                 type: 'force'
             }]
@@ -279,7 +236,7 @@
         myChart.setOption(option);
         myChart.hideLoading();
         $.ajax({
-            url: 'get_webkit_dep',
+            url: 'get_webkit_dep_2',
             data: {
                 news_title: $("#news_title").val(),
                 news_content: $("#news_content").val()
@@ -292,25 +249,49 @@
                 option.series[0] = {
                     type: 'force',
                     name: 'webkit-dep',
+                    ribbonType: false,
+                    categories: [
+                        {
+                            name: '关键词'
+                        },
+                        {
+                            name: '非关键词'
+                        }
+                    ],
                     itemStyle: {
                         normal: {
+                            label: {
+                                show: true,
+                                textStyle: {
+                                    color: '#333'
+                                }
+                            },
+                            nodeStyle: {
+                                brushType: 'both',
+                                borderColor: 'rgba(255,215,0,0.4)',
+                                borderWidth: 1
+                            },
                             linkStyle: {
-                                opacity: 0.5
+                                type: 'curve'
                             }
+                        },
+                        emphasis: {
+                            label: {
+                                show: false
+                            },
+                            nodeStyle: {
+                            },
+                            linkStyle: {}
                         }
                     },
-                    categories: data.categories,
-                    nodes: data.nodes,
-                    links: data.links,
-                    minRadius: 5,
-                    maxRadius: 8,
+                    useWorker: false,
+                    minRadius: 15,
+                    maxRadius: 25,
                     gravity: 1.1,
                     scaling: 1.1,
-                    steps: 20,
-                    large: true,
-                    useWorker: true,
-                    coolDown: 0.995,
-                    ribbonType: false
+                    roam: 'move',
+                    nodes: data.nodes,
+                    links: data.links
                 };
 
                 myChart.setOption(option);

@@ -3,38 +3,53 @@ import json
 from django.shortcuts import render, render_to_response
 from django.http import HttpResponse, JsonResponse
 from service.data_manage_service import *
+
+
 # Create your views here.
 
 def home_page(request):
     return render_to_response("news/home.html")
 
+
 def ajax_dict(request):
-    complete_network = json.load(open("/home/zhang/PycharmProjects/sentence_classify_zhang/data_file/webkei_dep.json", 'rb'))
+    complete_network = json.load(
+        open("/home/zhang/PycharmProjects/sentence_classify_zhang/data_file/complete_network.json", 'rb'))
     news_title = request.GET['news_title']
     news_content = request.GET['news_content']
     print news_title, news_content
     return JsonResponse(complete_network)
 
-# 首页
+
+"""
+    首页
+"""
+
+
 def index(request):
     return render_to_response("index/index.html")
 
-# 关键词提取
+
+"""
+    关键词提取
+"""
+
+
 def keywords_extraction(request):
     return render_to_response("keywords_extraction/keywords_extraction.html")
 
-# 新闻分类
-def CNN_classifier(request):
-    return render_to_response("news_data_classify/CNN_classifier.html")
+# 获取复杂网络数据
+def ajax_complete_network(request):
+    complete_network = json.load(
+        open("/home/zhang/PycharmProjects/sentence_classify_zhang/data_file/webkei_dep.json", 'rb'))
+    news_title = request.GET['news_title']
+    news_content = request.GET['news_content']
+    print news_title, news_content
+    return JsonResponse(complete_network)
 
-def LSTM_classifier(request):
-    return render_to_response("news_data_classify/LSTM_classifier.html")
 
-def RNN_classifier(request):
-    return render_to_response("news_data_classify/RNN_classifier.html")
-
-
-# 新闻管理
+"""
+    新闻管理
+"""
 def news_data_gathering(request):
     return render_to_response("news_data_manage/news_data_gathering.html")
 
@@ -49,12 +64,14 @@ def ajax_gathering_news(request):
     json_str = json.dumps(news_data)
     return JsonResponse(json.loads(json_str))
 
+
 #  分词
 def ajax_fenci(request):
     fenci()
     message = {"state": "success"}
     json_str = json.dumps(message)
     return JsonResponse(json.loads(json_str))
+
 
 #  停用词过滤
 def ajax_stopwords_filter(request):
@@ -63,6 +80,7 @@ def ajax_stopwords_filter(request):
     json_str = json.dumps(message)
     return JsonResponse(json.loads(json_str))
 
+
 #  词性标注
 def ajax_word_pesg(request):
     word_pesg()
@@ -70,12 +88,14 @@ def ajax_word_pesg(request):
     json_str = json.dumps(message)
     return JsonResponse(json.loads(json_str))
 
+
 #  生成语料
 def ajax_text_corpus(request):
     text_corpus()
     message = {"state": "success"}
     json_str = json.dumps(message)
     return JsonResponse(json.loads(json_str))
+
 
 #  训练词向量
 def ajax_train_word2vec(request):
@@ -92,11 +112,30 @@ def ajax_train_word2vec(request):
     json_str = json.dumps(message)
     return JsonResponse(json.loads(json_str))
 
+
 def news_data_preprocess(request):
     return render_to_response("news_data_manage/news_data_preprocess.html")
 
+
 def word2vec(request):
     return render_to_response("news_data_manage/word_to_vec.html")
+
+
+"""
+    新闻分类
+"""
+# 新闻分类
+def CNN_classifier(request):
+    return render_to_response("news_data_classify/CNN_classifier.html")
+
+
+def LSTM_classifier(request):
+    return render_to_response("news_data_classify/LSTM_classifier.html")
+
+
+def RNN_classifier(request):
+    return render_to_response("news_data_classify/RNN_classifier.html")
+
 
 
 # 用户管理
