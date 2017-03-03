@@ -47,6 +47,53 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </a>
+            <div class="navbar-custom-menu">
+            <ul class="nav navbar-nav">
+
+                <!-- User Account: style can be found in dropdown.less -->
+                <li class="dropdown user user-menu">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                        <img src="/staticfiles/image/admin.jpg" class="user-image" alt="User Image">
+                        <span class="hidden-xs">Admin</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <!-- User image -->
+                        <li class="user-header">
+                            <img src="/staticfiles/image/admin.jpg" class="img-circle" alt="User Image">
+
+                            <p>
+                                Alexander Pierce - Web Developer
+                                <small>Member since Nov. 2012</small>
+                            </p>
+                        </li>
+                        <!-- Menu Body -->
+                        <li class="user-body">
+                            <div class="row">
+                                <div class="col-xs-4 text-center">
+                                    <a href="#">Followers</a>
+                                </div>
+                                <div class="col-xs-4 text-center">
+                                    <a href="#">Sales</a>
+                                </div>
+                                <div class="col-xs-4 text-center">
+                                    <a href="#">Friends</a>
+                                </div>
+                            </div>
+                            <!-- /.row -->
+                        </li>
+                        <!-- Menu Footer-->
+                        <li class="user-footer">
+                            <div class="pull-left">
+                                <a href="#" class="btn btn-default btn-flat">Profile</a>
+                            </div>
+                            <div class="pull-right">
+                                <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
         </nav>
     </header>
     <aside class="main-sidebar">
@@ -61,7 +108,7 @@
                     <ul class="treeview-menu">
                         <li><a href="news_data_gathering"><i class="fa fa-circle-o"></i> 新闻数据采集</a></li>
                         <li><a href="news_data_preprocess"><i class="fa fa-circle-o"></i> 新闻数据处理</a></li>
-                        <li><a href="word_to_vec"><i class="fa fa-circle-o"></i> 生成词向量</a></li>
+{#                        <li><a href="word_to_vec"><i class="fa fa-circle-o"></i> 生成词向量</a></li>#}
                     </ul>
                 </li>
                 <li class="treeview">
@@ -82,6 +129,17 @@
                         <li><a href="CNN_classifier"><i class="fa fa-circle-o"></i> 基于CNN分类</a></li>
                         <li><a href="LSTM_classifier"><i class="fa fa-circle-o"></i> 基于LSTM分类</a></li>
                         <li><a href="RNN_classifier"><i class="fa fa-circle-o"></i> 基于RCNN分类</a></li>
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-diamond"></i>
+                        <span>系统词典管理</span><i class="fa fa-angle-left pull-right"></i>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="news_data_gathering"><i class="fa fa-circle-o"></i> 词向量训练</a></li>
+                        <li><a href="news_data_preprocess"><i class="fa fa-circle-o"></i> 语料库管理</a></li>
+                        <li><a href="word_to_vec"><i class="fa fa-circle-o"></i> 新闻词库管理</a></li>
                     </ul>
                 </li>
                 <li class="treeview">
@@ -124,7 +182,7 @@
                                 <!-- textarea -->
                                 <div class="form-group">
                                     <label>新闻内容</label>
-                                    <textarea id="news_content" class="form-control" rows="10"
+                                    <textarea id="news_content" class="form-control" rows="5"
                                               placeholder="Enter ..."></textarea>
                                 </div>
                             </form>
@@ -147,15 +205,19 @@
                             <div class="callout callout-danger" id="complete_network">
                                 <h4>新闻内容语义复杂网络</h4>
                             </div>
-                            <div class="callout callout-info" id="tf_idf_keywords">
-                                <h4>基于TF-IDF关键词提取</h4>
-                            </div>
-                            <div class="callout callout-warning">
-                                <h4>基于复杂网络关键词提取</h4>
-                            </div>
-                            <div class="callout callout-success">
+                            <div class="callout callout-success" id = "multi_feature_fusion">
                                 <h4>基于多特征融合关键词提取</h4>
                             </div>
+                            <div class="callout callout-info">
+                                <h4>基于语义复杂网络关键词提取</h4>
+                            </div>
+                            <div class="callout callout-danger" id="tf_idf_keywords">
+                                <h4>基于频率特征关键词提取</h4>
+                            </div>
+                            <div class="callout callout-success">
+                                <h4>基于新闻标题相关度关键词提取</h4>
+                            </div>
+
                         </div>
                         <!-- /.box-body -->
                     </div>
@@ -198,7 +260,8 @@
         type="text/javascript"></script>
 <!-- ChartJS 1.0.1 -->
 <script src="/staticfiles/AdminLTE/plugins/chartjs/Chart.min.js" type="text/javascript"></script>
-
+<!-- Wordcloud.js -->
+<script src="/staticfiles/js/wordcloud2.js" type="text/javascript"></script>
 <!-- 加载复杂网络数据 -->
 <script type="text/javascript" language="javascript">
 
@@ -302,6 +365,13 @@
             }
 
         });
+    });
+    $("#multi_feature_fusion").click(function(){
+        $("#function_detail").text($("#multi_feature_fusion").text());
+        list = [['李朝珍', 70], ['病床', 70], ['女孩', 70], ['母亲', 70], ['捐款', 70],
+            ['整形科', 70], ['捐', 70], ['会诊', 70], ['爱心', 70], ['烫伤', 70], ['护士', 70]
+        , ['医生', 70], ['全科', 70], ['手术', 70], ['彭昶', 70]];
+        WordCloud(document.getElementById('main'), { list: list } );
     });
 </script>
 

@@ -48,6 +48,53 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </a>
+            <div class="navbar-custom-menu">
+            <ul class="nav navbar-nav">
+
+                <!-- User Account: style can be found in dropdown.less -->
+                <li class="dropdown user user-menu">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                        <img src="/staticfiles/image/admin.jpg" class="user-image" alt="User Image">
+                        <span class="hidden-xs">Admin</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <!-- User image -->
+                        <li class="user-header">
+                            <img src="/staticfiles/image/admin.jpg" class="img-circle" alt="User Image">
+
+                            <p>
+                                Alexander Pierce - Web Developer
+                                <small>Member since Nov. 2012</small>
+                            </p>
+                        </li>
+                        <!-- Menu Body -->
+                        <li class="user-body">
+                            <div class="row">
+                                <div class="col-xs-4 text-center">
+                                    <a href="#">Followers</a>
+                                </div>
+                                <div class="col-xs-4 text-center">
+                                    <a href="#">Sales</a>
+                                </div>
+                                <div class="col-xs-4 text-center">
+                                    <a href="#">Friends</a>
+                                </div>
+                            </div>
+                            <!-- /.row -->
+                        </li>
+                        <!-- Menu Footer-->
+                        <li class="user-footer">
+                            <div class="pull-left">
+                                <a href="#" class="btn btn-default btn-flat">Profile</a>
+                            </div>
+                            <div class="pull-right">
+                                <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
         </nav>
     </header>
     <aside class="main-sidebar">
@@ -62,7 +109,7 @@
                     <ul class="treeview-menu">
                         <li><a href="news_data_gathering"><i class="fa fa-circle-o"></i> 新闻数据采集</a></li>
                         <li><a href="news_data_preprocess"><i class="fa fa-circle-o"></i> 新闻数据处理</a></li>
-                        <li><a href="word_to_vec"><i class="fa fa-circle-o"></i> 生成词向量</a></li>
+{#                        <li><a href="word_to_vec"><i class="fa fa-circle-o"></i> 生成词向量</a></li>#}
                     </ul>
                 </li>
                 <li class="treeview">
@@ -83,6 +130,17 @@
                         <li><a href="CNN_classifier"><i class="fa fa-circle-o"></i> 基于CNN分类</a></li>
                         <li><a href="LSTM_classifier"><i class="fa fa-circle-o"></i> 基于LSTM分类</a></li>
                         <li><a href="RNN_classifier"><i class="fa fa-circle-o"></i> 基于RCNN分类</a></li>
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-diamond"></i>
+                        <span>系统词典管理</span><i class="fa fa-angle-left pull-right"></i>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="news_data_gathering"><i class="fa fa-circle-o"></i> 词向量训练</a></li>
+                        <li><a href="news_data_preprocess"><i class="fa fa-circle-o"></i> 语料库管理</a></li>
+                        <li><a href="word_to_vec"><i class="fa fa-circle-o"></i> 新闻词库管理</a></li>
                     </ul>
                 </li>
                 <li class="treeview">
@@ -233,44 +291,44 @@
                 async: true,
 
                 success: function (data) {
-                    for(var i= 0;i<data.news.length;i++){
-{#                        alert(data.news[i].news_title)#}
+                    for (var i = 0; i < data.news.length; i++) {
+                        {#                        alert(data.news[i].news_title)#}
                         $('#gathering_news_result').append(
-                                '<div class="box box-solid">' +
-                                '<div class="box-header with-border">' +
-                                '<i class="fa fa-text-width"></i>' +
-                                '<h3 class="box-title">' +
-                                data.news[i].news_title +
-                                '</h3>' +
-                                '</div>' +
-                                '<!-- /.box-header -->' +
-                                '<div class="box-body">' +
-                                '<dl>' +
-                                '<dt>' +
-                                '类别' +
-                                '</dt>' +
-                                '<dd>' +
-                                data.news[i].news_ctg  +
-                                '</dd>' +
-                                '<dt>' +
-                                '新闻内容' +
-                                '</dt>' +
-                                '<dd>' +
-                                data.news[i].news_content +
-                                '</dd>' +
-                                '<dt>' +
-                                'URL' +
-                                '</dt>' +
-                                '<dd>' +
-                                data.news[i].news_url +
-                                '</dd>' +
-                                '<dt>' +
-                                '时间' +
-                                '</dt>' +
-                                '<dd>' +
-                                data.news[i].news_time +
-                                '</dd>' +
-                                '</dl></div></div>'
+                            '<div class="box box-solid">' +
+                            '<div class="box-header with-border">' +
+                            '<i class="fa fa-text-width"></i>' +
+                            '<h3 class="box-title">' +
+                            data.news[i].news_title +
+                            '</h3>' +
+                            '</div>' +
+                            '<!-- /.box-header -->' +
+                            '<div class="box-body">' +
+                            '<dl>' +
+                            '<dt>' +
+                            '类别' +
+                            '</dt>' +
+                            '<dd>' +
+                            data.news[i].news_ctg +
+                            '</dd>' +
+                            '<dt>' +
+                            '新闻内容' +
+                            '</dt>' +
+                            '<dd>' +
+                            data.news[i].news_content +
+                            '</dd>' +
+                            '<dt>' +
+                            'URL' +
+                            '</dt>' +
+                            '<dd>' +
+                            data.news[i].news_url +
+                            '</dd>' +
+                            '<dt>' +
+                            '时间' +
+                            '</dt>' +
+                            '<dd>' +
+                            data.news[i].news_time +
+                            '</dd>' +
+                            '</dl></div></div>'
                         );
                     }
                 },

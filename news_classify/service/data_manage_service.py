@@ -39,14 +39,16 @@ def tostring(htmlelement):
     return htmlelement.text_content().encode('utf-8')
 
 
-# 仅生成分词
+# 中文分词
 def jieba_fenci(text):
+    # text为待分词文本
+    # 去除文本中的换行符
     term = text.split('\n')
     s = ""
     for i in term:
-        s += i
-    seg_list = jieba.cut(s)
-    return seg_list
+        s += i  # 拼接文本
+    seg_list = jieba.cut(s)  # 分词操作
+    return seg_list  # 返回分词结果
 
 
 # 生成分词及其词性

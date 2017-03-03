@@ -3,6 +3,9 @@
 
 from collections import defaultdict
 import cPickle
+
+import time
+
 import news_classify.util.global_set as global_set
 from news_classify.model.news import News
 import cPickle
@@ -56,15 +59,25 @@ def built_word_connect(V, b, W):
 
 # 生成新闻内容语义复杂网络
 def get_word_comlete_network(news_content):
-    pre_dir = "/home/zhang/PycharmProjects/sentence_classification/data_file/"
-    all_news_word_tf_idf_and_others_dir = pre_dir + "all_news_word_tf_idf_and_others.p"
-    word_vec_dict_dir = pre_dir + "word_vec_dict.p"
-    all_news_word_tf_idf_and_others = cPickle.load(open(all_news_word_tf_idf_and_others_dir, "rb"))
-    word_vec_dict = cPickle.load(open(word_vec_dict_dir, "rb"))
-    wordtoix, ixtoword = all_news_word_tf_idf_and_others[0], all_news_word_tf_idf_and_others[1]
+    pre_dir = "/home/zhang/PycharmProjects/sentence_classify_zhang/data_file_2017/"
+    print "程序开始时间：" + time.asctime(time.localtime(time.time()))
+    # 加载文件地址
+    wordtoix_and_ixtoword_dir = pre_dir + "wordtoix_and_ixtoword_true.p"
+    all_news_content_by_id_dir = pre_dir + "all_news_content_by_id_true.p"
+    word_vec_dict_dir = pre_dir + "word_vec_dict_true.p"
 
-    # 保存词的标号 与向量的对应关系
-    W = word_vec_dict[0]
+    # 加载文件
+    wordtoix_and_ixtoword_p = cPickle.load(open(wordtoix_and_ixtoword_dir, "rb"))
+    all_news_content_by_id_p = cPickle.load(open(all_news_content_by_id_dir, "rb"))
+    word_vec_dict_p = cPickle.load(open(word_vec_dict_dir, "rb"))
+
+    # 获取需要的数据
+    wordtoix, ixtoword = wordtoix_and_ixtoword_p[0], wordtoix_and_ixtoword_p[1]
+    all_news_content_by_id = all_news_content_by_id_p[0]
+    W = word_vec_dict_p[0]  # 保存词的标号 与向量的对应关系
+
+    del wordtoix_and_ixtoword_p, all_news_content_by_id_p, word_vec_dict_p
+    print "程序加载数据完毕时间：" + time.asctime(time.localtime(time.time()))
 
     news_content = news_content.decode('utf-8')
     stopwords_file_dir = global_set.DATA_FILE_DIR + "direct_use/stopwords_csdn_shijieba2009.txt"

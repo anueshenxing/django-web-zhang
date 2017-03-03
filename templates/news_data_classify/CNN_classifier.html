@@ -31,6 +31,15 @@
 
     <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <script src="/staticfiles/js/echarts-all.js"></script>
+    <style>
+        #center {
+            MARGIN-RIGHT: auto;
+            MARGIN-LEFT: 300px;
+            vertical-align: middle;
+            line-height: 25px;
+        }
+    </style>
 </head>
 <body class="skin-blue sidebar-mini">
 <div class="wrapper">
@@ -46,6 +55,53 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </a>
+            <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">
+
+                    <!-- User Account: style can be found in dropdown.less -->
+                    <li class="dropdown user user-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                            <img src="/staticfiles/image/admin.jpg" class="user-image" alt="User Image">
+                            <span class="hidden-xs">Admin</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <!-- User image -->
+                            <li class="user-header">
+                                <img src="/staticfiles/image/admin.jpg" class="img-circle" alt="User Image">
+
+                                <p>
+                                    Alexander Pierce - Web Developer
+                                    <small>Member since Nov. 2012</small>
+                                </p>
+                            </li>
+                            <!-- Menu Body -->
+                            <li class="user-body">
+                                <div class="row">
+                                    <div class="col-xs-4 text-center">
+                                        <a href="#">Followers</a>
+                                    </div>
+                                    <div class="col-xs-4 text-center">
+                                        <a href="#">Sales</a>
+                                    </div>
+                                    <div class="col-xs-4 text-center">
+                                        <a href="#">Friends</a>
+                                    </div>
+                                </div>
+                                <!-- /.row -->
+                            </li>
+                            <!-- Menu Footer-->
+                            <li class="user-footer">
+                                <div class="pull-left">
+                                    <a href="#" class="btn btn-default btn-flat">Profile</a>
+                                </div>
+                                <div class="pull-right">
+                                    <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
         </nav>
     </header>
     <aside class="main-sidebar">
@@ -60,7 +116,7 @@
                     <ul class="treeview-menu">
                         <li><a href="news_data_gathering"><i class="fa fa-circle-o"></i> 新闻数据采集</a></li>
                         <li><a href="news_data_preprocess"><i class="fa fa-circle-o"></i> 新闻数据处理</a></li>
-                        <li><a href="word_to_vec"><i class="fa fa-circle-o"></i> 生成词向量</a></li>
+                        {#                        <li><a href="word_to_vec"><i class="fa fa-circle-o"></i> 生成词向量</a></li>#}
                     </ul>
                 </li>
                 <li class="treeview">
@@ -81,6 +137,17 @@
                         <li><a href="CNN_classifier"><i class="fa fa-circle-o"></i> 基于CNN分类</a></li>
                         <li><a href="LSTM_classifier"><i class="fa fa-circle-o"></i> 基于LSTM分类</a></li>
                         <li><a href="RNN_classifier"><i class="fa fa-circle-o"></i> 基于RCNN分类</a></li>
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-diamond"></i>
+                        <span>系统词典管理</span><i class="fa fa-angle-left pull-right"></i>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="news_data_gathering"><i class="fa fa-circle-o"></i> 词向量训练</a></li>
+                        <li><a href="news_data_preprocess"><i class="fa fa-circle-o"></i> 语料库管理</a></li>
+                        <li><a href="word_to_vec"><i class="fa fa-circle-o"></i> 新闻词库管理</a></li>
                     </ul>
                 </li>
                 <li class="treeview">
@@ -142,8 +209,8 @@
                         </div>
                         <!-- /.box-header -->
                         <div class="box-body">
-                            <div class="callout callout-danger">
-{#                                <button type="button" class="btn btn-block btn-warning btn-lg"><h4>新闻内容语义复杂网络</h4></button>#}
+                            <div class="callout callout-danger" id="classify_by_MF">
+                                {#                                <button type="button" class="btn btn-block btn-warning btn-lg"><h4>新闻内容语义复杂网络</h4></button>#}
                                 <h4>基于特征扩展分类</h4>
                             </div>
                             <div class="callout callout-info">
@@ -159,10 +226,45 @@
                         <div class="box-header with-border">
                             <i class="fa fa-mail-forward"></i>
 
-                            <h3 class="box-title">功能</h3>
+                            <h3 class="box-title" id="function_detail">功能</h3>
                         </div>
                         <div class="box-body">
-{#                            <div id="main" style="width: 1000px;height:600px;"></div>#}
+                            <div style="width: 1000px;height:50px;">
+                                <div class="row">
+                                    <div id="center">
+                                        <table border="0">
+                                            <tr>
+                                                <th bgcolor="#EFC631" width="40px">1</th>
+                                                <th bgcolor="#63869e" width="40px">2</th>
+                                                <th bgcolor="#91c7ae" width="40px">3</th>
+                                                <th bgcolor="#ADFF2F" width="40px">4</th>
+                                                <th bgcolor="#55C631" width="40px">5</th>
+                                                <th bgcolor="#99869e" width="40px">6</th>
+                                                <th bgcolor="#22c7ae" width="40px">7</th>
+                                                <th bgcolor="#c235ee" width="40px">8</th>
+                                                <th bgcolor="#EF5531" width="40px">9</th>
+                                                <th bgcolor="#8470FF" width="40px">10</th>
+                                                <th bgcolor="#11869e" width="40px">11</th>
+
+                                            </tr>
+                                            <tr>
+                                                <th>娱乐</th>
+                                                <th>汽车</th>
+                                                <th>健康</th>
+                                                <th>社会</th>
+                                                <th>科技</th>
+                                                <th>教育</th>
+                                                <th>军事</th>
+                                                <th>美食</th>
+                                                <th>旅游</th>
+                                                <th>财经</th>
+                                                <th>体育</th>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="main" style="width: 1000px;height:400px;"></div>
                         </div>
                     </div>
                 </div>
@@ -188,8 +290,67 @@
 <!-- CK Editor -->
 <script src="https://cdn.ckeditor.com/4.4.3/standard/ckeditor.js" type="text/javascript"></script>
 <!-- Bootstrap WYSIHTML5 -->
-<script src="/staticfiles/AdminLTE/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js" type="text/javascript"></script>
+<script src="/staticfiles/AdminLTE/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"
+        type="text/javascript"></script>
 <!-- ChartJS 1.0.1 -->
 <script src="/staticfiles/AdminLTE/plugins/chartjs/Chart.min.js" type="text/javascript"></script>
+<!-- 点击事件-->
+<script>
+    $("#classify_by_MF").click(function () {
+        $("#function_detail").text($("#classify_by_MF").text());
+        var myChart = echarts.init(document.getElementById('main'));
+        option = {
+            tooltip: {
+                formatter: "{a} <br/>{b} : {c}"
+            },
+            toolbox: {
+                feature: {
+                    restore: {},
+                    saveAsImage: {}
+                }
+            },
+            series: [
+                {
+                    min: 0,
+                    max: 12,
+                    splitNumber: 12,
+                    name: '新闻类别',
+                    type: 'gauge',
+                    detail: {formatter: '社会'},
+                    data: [{value: 0, name: ''}],
+                    axisLine: {
+                        show: true,
+                        lineStyle: {
+                            color: [
+                                [0.0417, '#FFFFFF'],
+                                [0.125, '#EFC631'],
+                                [0.2083, '#63869e'],
+                                [0.2917, '#91c7ae'],
+                                [0.375, '#ADFF2F'],
+                                [0.4583, '#55C631'],
+                                [0.5417, '#99869e'],
+                                [0.625, '#22c7ae'],
+                                [0.7083, '#c235ee'],
+                                [0.7917, '#EF5531'],
+                                [0.875, '#8470FF'],
+                                [0.9583, '#11869e'],
+                                [1, '#FFFFFF']
+
+                            ],
+                            width: 30
+                        }
+                    },
+                }
+            ]
+        };
+
+        setInterval(function () {
+            option.series[0].data[0].value = 4;
+            myChart.setOption(option, true);
+        }, 1000);
+
+    });
+
+</script>
 </body>
 </html>
